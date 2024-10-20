@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  backend:
+    build: ./node
+    container_name: rule_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URL=mongodb+srv://savan9443:savan123@cluster0.wa8csvb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+    depends_on:
+      - mongo
+    networks:
+      - rule_network
+
+  frontend:
+    build: ./frontend
+    container_name: rule_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - rule_network
+
+  mongo:
+    image: mongo:latest
+    container_name: rule_mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - rule_network
+    volumes:
+      - mongo_data:/data/db
+
+networks:
+  rule_network:
+
+volumes:
+  mongo_data:
